@@ -1,0 +1,21 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+
+  config.vm.box = "ubuntu/trusty64"
+
+  config.vm.network "forwarded_port", guest: 5000, host: 5000
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.customize ['modifyvm', :id, '--usb', 'on']
+    # Arduino SA, Mega 2560 R3 (CDC ACM)
+    vb.customize ['usbfilter', 'add', '0', '--target', :id, '--name', 'printer_filter', '--vendorid', '0x2341', '--productid', '0x0042']
+		# If the network is slow:
+		# https://serverfault.com/questions/453185/vagrant-virtualbox-dns-10-0-2-3-not-working?rq=1
+		# https://serverfault.com/questions/495914/vagrant-slow-internet-connection-in-guest
+		vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+		# comment the following line if there are too many DNS lookups
+		vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+  end
+end

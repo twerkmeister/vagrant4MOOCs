@@ -1,0 +1,29 @@
+=== For VirtualBox USB support ===
+install virtualbox (from repo or the homepage) + virtualbox-extensions (from the homepage)
+add the host user to the vboxusers (check with groups <username>, add with usermod -a -G vboxusers <username>)
+disable the EHCI option in the VirtualBox GUI, eventually add a filter rule there if the one in the Vagrant file does not work
+
+to check if the VMs finds the device use
+	lsusb
+mounting
+	sudo fdisk -l
+	mkdir /media/tryout
+	sudo mount -t vfat /dev/sdb1 /media/tryout -o uid=1000,gid=1000,utf8,dmask=027,fmask=137
+		or
+	sudo mount -t ntfs-3g /dev/sdb1 /media/external
+	sudo umount /dev/sdb1
+also look at
+	pmount
+
+=== set up forwarding of the serial port ===
+to find the serial port 
+	dmesg | grep tty
+get more information
+	sudo setserial -g /dev/tty...
+check permissions for the port
+	ls -l /dev/ttyACM0
+depending on the group that maintains the port in the previous command
+	usermod -a -G <group> <username>
+	dialout in my case
+
+restart after changing groups
