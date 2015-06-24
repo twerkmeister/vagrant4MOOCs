@@ -1,0 +1,13 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+#
+
+Vagrant.configure(2) do |config|
+	config.vm.box = "ubuntu/trusty64"
+
+	config.vm.provision "bootstrap", type "shell" do |s|
+		s.inline = "export SUBMIT_USERNAME=\"{{ username }}\"
+							export SUBMIT_KEY=\"{{ key }}\""
+		run: "always"
+	end
+end
