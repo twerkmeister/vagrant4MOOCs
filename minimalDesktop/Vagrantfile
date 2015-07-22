@@ -1,0 +1,19 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+
+Vagrant.configure(2) do |config|
+  config.vm.box = "ubuntu/trusty64"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.gui = true
+  end
+
+  config.vm.provision "shell", inline: <<-SHELL
+    sudo apt-get update
+    sudo echo "allowed_users=anybod" >> /etc/X11/Xwrapper.config
+    sudo apt-get install -y --no-install-recommends lubuntu-desktop
+    sudo apt-get install -y virtualbox-guest-dkms virtualbox-guest-utils virtualbox-guest-x11
+    sudo apt-get install -y openjdk-7-jdk openjdk-7-source eclipse
+  SHELL
+end
