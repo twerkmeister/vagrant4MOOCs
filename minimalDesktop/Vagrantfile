@@ -3,17 +3,22 @@
 
 
 Vagrant.configure(2) do |config|
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = 'ubuntu/trusty64'
 
-  config.vm.provider "virtualbox" do |vb|
+  config.vm.provider 'virtualbox' do |vb|
     vb.gui = true
   end
 
-  config.vm.provision "shell", inline: <<-SHELL
+  config.vm.provision 'shell', inline: <<-SHELL
+    sudo apt-add-repository universe
+    sudo apt-add-repository multiverse
     sudo apt-get update
-    sudo echo "allowed_users=anybod" >> /etc/X11/Xwrapper.config
+    sudo echo 'allowed_users=anybod' >> /etc/X11/Xwrapper.config
     sudo apt-get install -y --no-install-recommends lubuntu-desktop
     sudo apt-get install -y virtualbox-guest-dkms virtualbox-guest-utils virtualbox-guest-x11
     sudo apt-get install -y openjdk-7-jdk openjdk-7-source eclipse
+    sudo apt-get autoremove -y
+
+    sudo reboot
   SHELL
 end
